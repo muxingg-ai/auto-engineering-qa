@@ -32,10 +32,12 @@ function renderMarkdown(md: string): string {
 
     dataRows.forEach((row, index) => {
       const cells = row.split('|').filter(c => c.trim());
-      // 自己控制斑马纹：偶数行浅色背景+深色文字，奇数行深色背景+白色文字
+      const isLastRow = index === dataRows.length - 1;
       const isEven = index % 2 === 0;
-      const bgColor = isEven ? '#1a6fbd' : '#f0f6ff';
-      const textColor = isEven ? '#ffffff' : '#0f172a';
+      // 最后一行始终用浅色背景+深色文字（DaisyUI会给最后行特殊样式）
+      // 其他行：偶数=深蓝背景+白字，奇数=浅色背景+深字
+      const bgColor = (isEven && !isLastRow) ? '#1a6fbd' : '#f0f6ff';
+      const textColor = (isEven && !isLastRow) ? '#ffffff' : '#0f172a';
       t += `<tr style="background:${bgColor}">`;
       cells.forEach(c => {
         t += `<td class="text-xs px-2 py-1" style="color:${textColor}">${c.trim()}</td>`;
