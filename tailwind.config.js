@@ -9,8 +9,8 @@ export default {
         light: {
           "primary": "#491eff",
           "primary-content": "#d4dbff",
-          "secondary": "#f0f4ff",        // 浅蓝灰背景
-          "secondary-content": "#1e293b", // 深色文字
+          "secondary": "#006eb8",      // 深蓝背景（保持不变）
+          "secondary-content": "#ffffff", // ✅ 白色文字
           "accent": "#00cfbd",
           "accent-content": "#00100d",
           "neutral": "#2b3440",

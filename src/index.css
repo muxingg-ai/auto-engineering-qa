@@ -37,7 +37,7 @@
 .chat-bubble-secondary td,
 .chat-bubble-secondary th,
 .chat-bubble-secondary li {
-    color: #0f172a !important; /* 这是一个非常深的深蓝色/黑色 */
+    color: #ffffff !important;  /* ✅ 深蓝背景配白色文字 */
 }
 
 /* 针对 DaisyUI 斑马纹表格文字丢失的问题 */

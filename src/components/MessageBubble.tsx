@@ -49,12 +49,12 @@ export const MessageBubble: React.FC<Props> = ({ message }) => {
           <span className="text-xs">{isUser ? '你' : 'AI'}</span>
         </div>
       </div>
-      <div className={`chat-bubble ${isUser ? 'chat-bubble-primary' : 'chat-bubble-secondary text-slate-900'} max-w-[90%]`}>
+      <div className={`chat-bubble ${isUser ? 'chat-bubble-primary' : 'chat-bubble-secondary'} max-w-[90%]`}>
         {isUser ? (
           <p className="text-sm">{message.content}</p>
         ) : (
           <div
-            className="prose prose-sm max-w-none text-slate-900 [&_*]:text-slate-900"
+            className="prose prose-sm max-w-none text-white [&_*]:text-white"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }}
           />
         )}
