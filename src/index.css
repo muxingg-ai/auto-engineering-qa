@@ -1,3 +1,46 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* 新增补丁代码 */
+@layer base {
+  body {
+    @apply text-slate-900; /* 强制基础文字颜色为深色 */
+  }
+
+  /* 针对你图片中显示的列表和表格文字 */
+  .chat-bubble, 
+  table, 
+  li, 
+  strong {
+    color: #1a1a1a !important; 
+  }
+/* 强制让 AI 回复区域内的所有文字默认为深灰色/黑色 */
+.chat-bubble-secondary .prose {
+  color: #1a1a1a !important;
+}
+
+/* 确保表格内的文字也是黑色 */
+.chat-bubble-secondary table, 
+.chat-bubble-secondary li {
+  color: #1a1a1a !important;
+}
+  /* 针对数据表格的标题栏，如果看不清也需要调整 */
+  th {
+    @apply text-slate-700 font-bold;
+  }
+}
+/* 强制覆盖 AI 聊天气泡内所有元素的颜色 */
+.chat-bubble-secondary, 
+.chat-bubble-secondary .prose,
+.chat-bubble-secondary table,
+.chat-bubble-secondary td,
+.chat-bubble-secondary th,
+.chat-bubble-secondary li {
+    color: #0f172a !important; /* 这是一个非常深的深蓝色/黑色 */
+}
+
+/* 针对 DaisyUI 斑马纹表格文字丢失的问题 */
+.table-zebra tbody tr:nth-child(even) td {
+    color: #0f172a !important;
+}

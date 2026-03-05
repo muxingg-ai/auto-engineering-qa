@@ -166,7 +166,7 @@ export default function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-base-100">
+     <div data-theme="light" className="flex flex-col h-screen bg-white text-slate-900">
       {/* Header */}
       <header className="navbar bg-base-200 border-b px-4 py-0 min-h-12">
         <div className="flex-1 gap-2">

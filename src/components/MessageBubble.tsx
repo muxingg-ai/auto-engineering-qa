@@ -16,12 +16,12 @@ function renderMarkdown(md: string): string {
     .replace(/^&gt; (.+)$/gm, '<div class="border-l-4 border-primary pl-3 py-1 my-2 bg-primary/5 rounded-r text-sm">$1</div>')
     .replace(/^---$/gm, '<hr class="my-3 border-base-300"/>')
     .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm">$1</li>')
-    .replace(/^(\d+)\. (.+)$/gm, '<li class="ml-4 list-decimal text-sm">$2</li>');
+    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm text-slate-900">$1</li>')
 
   html = html.replace(/(\|.+\|\n)+/g, (tableBlock) => {
     const rows = tableBlock.trim().split('\n').filter(r => !r.match(/^\|[\s\-:]+\|$/));
     if (rows.length === 0) return tableBlock;
-    let t = '<div class="overflow-x-auto my-2"><table class="table table-xs table-zebra w-full"><thead><tr>';
+   let t = '<div class="overflow-x-auto my-2"><table class="table table-xs table-zebra w-full text-slate-900"><thead><tr>';
     const headerCells = rows[0].split('|').filter(c => c.trim());
     headerCells.forEach(c => { t += `<th class="text-xs">${c.trim()}</th>`; });
     t += '</tr></thead><tbody>';
@@ -49,12 +49,12 @@ export const MessageBubble: React.FC<Props> = ({ message }) => {
           <span className="text-xs">{isUser ? '你' : 'AI'}</span>
         </div>
       </div>
-      <div className={`chat-bubble ${isUser ? 'chat-bubble-primary' : 'chat-bubble-secondary'} max-w-[90%]`}>
+      <div className={`chat-bubble ${isUser ? 'chat-bubble-primary' : 'chat-bubble-secondary text-slate-900'} max-w-[90%]`}>
         {isUser ? (
           <p className="text-sm">{message.content}</p>
         ) : (
           <div
-            className="prose prose-sm max-w-none"
+            className="prose prose-sm max-w-none text-slate-900 [&_*]:text-slate-900"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }}
           />
         )}

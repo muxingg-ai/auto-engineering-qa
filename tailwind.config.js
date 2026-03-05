@@ -10,7 +10,7 @@ export default {
           "primary": "#491eff",
           "primary-content": "#d4dbff",
           "secondary": "#006eb8",
-          "secondary-content": "#ffffff",
+          "secondary-content": "#0f172a",
           "accent": "#00cfbd",
           "accent-content": "#00100d",
           "neutral": "#2b3440",
