@@ -2,36 +2,23 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 新增补丁代码 */
 @layer base {
   body {
-    @apply text-slate-900; /* 强制基础文字颜色为深色 */
+    @apply text-slate-900;
   }
 
-  /* 针对你图片中显示的列表和表格文字 */
-  .chat-bubble, 
-  table, 
-  li, 
-  strong {
-    color: #1a1a1a !important; 
-  }
-/* 强制让 AI 回复区域内的所有文字默认为深灰色/黑色 */
-.chat-bubble-secondary .prose {
-  color: #1a1a1a !important;
-}
-
-/* 确保表格内的文字也是黑色 */
-.chat-bubble-secondary .prose,
-.chat-bubble-secondary table,
-.chat-bubble-secondary td,
-.chat-bubble-secondary th,
-.chat-bubble-secondary li {
-    color: #ffffff !important;  /* ✅ 深蓝背景配白色文字 */
-}
-}
-  /* 针对数据表格的标题栏，如果看不清也需要调整 */
   th {
     @apply text-slate-700 font-bold;
   }
 }
 
+/* AI 回复气泡（深蓝背景）：统一用白色文字 */
+.chat-bubble-secondary,
+.chat-bubble-secondary .prose,
+.chat-bubble-secondary table,
+.chat-bubble-secondary td,
+.chat-bubble-secondary th,
+.chat-bubble-secondary li,
+.chat-bubble-secondary strong {
+  color: #ffffff !important;
+}
