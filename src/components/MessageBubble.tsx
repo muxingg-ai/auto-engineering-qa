@@ -19,7 +19,6 @@ function renderMarkdown(md: string): string {
   html = html.replace(/(\|.+\|\n)+/g, (tableBlock) => {
     const allRows = tableBlock.trim().split('\n');
     const headerRow = allRows[0];
-    // 保留分隔行用于计数，数据行单独处理
     const dataRows = allRows.slice(1).filter(r => !r.match(/^\|[\s\-:]+\|$/));
     if (!headerRow) return tableBlock;
 
@@ -31,12 +30,12 @@ function renderMarkdown(md: string): string {
     });
     t += '</tr></thead><tbody>';
 
-    // dataRows[0]是第1个数据行，在tbody里是 tr:nth-child(1) = 奇数 = 浅色背景
-    // 所以 index 0,2,4(奇数序号) = 浅色行 → 深色文字
-    //      index 1,3,5(偶数序号) = 深色行 → 白色文字
     dataRows.forEach((row, index) => {
       const cells = row.split('|').filter(c => c.trim());
-      const isLightBg = index % 2 === 1; // 第0,2,4...行是浅色背景
+      const isLastRow = index === dataRows.length - 1;
+      // 浅色背景行（奇数index 1,3,5... 以及最后一行）用深色文字
+      // 深色背景行（偶数index 0,2,4...，除最后行）用白色文字
+      const isLightBg = (index % 2 === 1) || isLastRow;
       const color = isLightBg ? '#0f172a' : '#ffffff';
       t += '<tr>';
       cells.forEach(c => {
