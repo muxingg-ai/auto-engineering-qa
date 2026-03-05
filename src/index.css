@@ -8,7 +8,7 @@
   }
 
   th {
-    @apply text-slate-700 font-bold;
+    @apply font-bold;
   }
 }
 
@@ -21,11 +21,4 @@
 .chat-bubble-secondary li,
 .chat-bubble-secondary strong {
   color: #ffffff !important;
-}
-
-/* 表格斑马纹：浅色背景行改回深色文字 */
-.chat-bubble-secondary table tr:nth-child(even) td,
-.chat-bubble-secondary table tr:nth-child(even) th,
-.chat-bubble-secondary .table-zebra tbody tr:nth-child(even) td {
-  color: #0f172a !important;
 }

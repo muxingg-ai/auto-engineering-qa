@@ -15,22 +15,29 @@ function renderMarkdown(md: string): string {
     .replace(/`([^`]+)`/g, '<code class="bg-base-300 px-1 rounded text-xs">$1</code>')
     .replace(/^&gt; (.+)$/gm, '<div class="border-l-4 border-primary pl-3 py-1 my-2 bg-primary/5 rounded-r text-sm">$1</div>')
     .replace(/^---$/gm, '<hr class="my-3 border-base-300"/>')
-    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm">$1</li>')
-    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm text-slate-900">$1</li>')
+    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm text-white">$1</li>')
 
   html = html.replace(/(\|.+\|\n)+/g, (tableBlock) => {
     const rows = tableBlock.trim().split('\n').filter(r => !r.match(/^\|[\s\-:]+\|$/));
     if (rows.length === 0) return tableBlock;
-   let t = '<div class="overflow-x-auto my-2"><table class="table table-xs table-zebra w-full text-slate-900"><thead><tr>';
+
+    // 表头：深色背景，白色文字
+    let t = '<div class="overflow-x-auto my-2"><table class="table table-xs table-zebra w-full"><thead><tr>';
     const headerCells = rows[0].split('|').filter(c => c.trim());
-    headerCells.forEach(c => { t += `<th class="text-xs">${c.trim()}</th>`; });
+    headerCells.forEach(c => { t += `<th class="text-xs text-white">${c.trim()}</th>`; });
     t += '</tr></thead><tbody>';
+
     for (let i = 1; i < rows.length; i++) {
       const cells = rows[i].split('|').filter(c => c.trim());
+      // 斑马纹：偶数行是浅色背景用深色文字，奇数行是深色背景用白色文字
+      const isEvenRow = i % 2 === 0;
       t += '<tr>';
-      cells.forEach(c => { t += `<td class="text-xs">${c.trim()}</td>`; });
+      cells.forEach(c => {
+        t += `<td class="text-xs ${isEvenRow ? 'text-slate-900' : 'text-white'}">${c.trim()}</td>`;
+      });
       t += '</tr>';
     }
+
     t += '</tbody></table></div>';
     return t;
   });
