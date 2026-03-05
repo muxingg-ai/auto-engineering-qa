@@ -8,12 +8,12 @@ interface Props {
 function renderMarkdown(md: string): string {
   let html = md
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/^### (.+)$/gm, '<h3 class="font-bold text-sm mt-3 mb-1">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 class="font-bold text-base mt-4 mb-2">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 class="font-bold text-lg mt-4 mb-2">$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-    .replace(/`([^`]+)`/g, '<code class="bg-base-300 px-1 rounded text-xs">$1</code>')
-    .replace(/^&gt; (.+)$/gm, '<div class="border-l-4 border-primary pl-3 py-1 my-2 bg-primary/5 rounded-r text-sm">$1</div>')
+    .replace(/^### (.+)$/gm, '<h3 class="font-bold text-sm mt-3 mb-1 text-white">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 class="font-bold text-base mt-4 mb-2 text-white">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 class="font-bold text-lg mt-4 mb-2 text-white">$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>')
+    .replace(/`([^`]+)`/g, '<code class="bg-base-300 px-1 rounded text-xs text-white">$1</code>')
+    .replace(/^&gt; (.+)$/gm, '<div class="border-l-4 border-primary pl-3 py-1 my-2 bg-primary/5 rounded-r text-sm text-white">$1</div>')
     .replace(/^---$/gm, '<hr class="my-3 border-base-300"/>')
     .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm text-white">$1</li>')
 
@@ -24,16 +24,19 @@ function renderMarkdown(md: string): string {
     // 表头：深色背景，白色文字
     let t = '<div class="overflow-x-auto my-2"><table class="table table-xs table-zebra w-full"><thead><tr>';
     const headerCells = rows[0].split('|').filter(c => c.trim());
-    headerCells.forEach(c => { t += `<th class="text-xs text-white">${c.trim()}</th>`; });
+    headerCells.forEach(c => {
+      t += `<th class="text-xs" style="color:#ffffff">${c.trim()}</th>`;
+    });
     t += '</tr></thead><tbody>';
 
     for (let i = 1; i < rows.length; i++) {
       const cells = rows[i].split('|').filter(c => c.trim());
-      // 斑马纹：偶数行是浅色背景用深色文字，奇数行是深色背景用白色文字
+      // 奇数行(1,3,5...) 深色背景 → 白色文字
+      // 偶数行(2,4,6...) 浅色斑马纹 → 深色文字
       const isEvenRow = i % 2 === 0;
       t += '<tr>';
       cells.forEach(c => {
-        t += `<td class="text-xs ${isEvenRow ? 'text-slate-900' : 'text-white'}">${c.trim()}</td>`;
+        t += `<td class="text-xs" style="color:${isEvenRow ? '#0f172a' : '#ffffff'}">${c.trim()}</td>`;
       });
       t += '</tr>';
     }
@@ -42,8 +45,8 @@ function renderMarkdown(md: string): string {
     return t;
   });
 
-  html = html.replace(/\n{2,}/g, '</p><p class="text-sm my-1">');
-  return `<p class="text-sm my-1">${html}</p>`;
+  html = html.replace(/\n{2,}/g, '</p><p class="text-sm my-1 text-white">');
+  return `<p class="text-sm my-1 text-white">${html}</p>`;
 }
 
 export const MessageBubble: React.FC<Props> = ({ message }) => {
@@ -61,7 +64,7 @@ export const MessageBubble: React.FC<Props> = ({ message }) => {
           <p className="text-sm">{message.content}</p>
         ) : (
           <div
-            className="prose prose-sm max-w-none text-white [&_*]:text-white"
+            className="prose prose-sm max-w-none"
             dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }}
           />
         )}

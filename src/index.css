@@ -12,13 +12,15 @@
   }
 }
 
-/* AI 回复气泡（深蓝背景）：默认白色文字 */
+/* AI 回复气泡（深蓝背景）：白色文字作为基础默认值 */
+/* 注意：表格 td/th 的颜色已在 MessageBubble.tsx 里用 style= 精确控制，不在这里覆盖 */
 .chat-bubble-secondary,
 .chat-bubble-secondary .prose,
-.chat-bubble-secondary table,
-.chat-bubble-secondary td,
-.chat-bubble-secondary th,
 .chat-bubble-secondary li,
-.chat-bubble-secondary strong {
+.chat-bubble-secondary strong,
+.chat-bubble-secondary h1,
+.chat-bubble-secondary h2,
+.chat-bubble-secondary h3,
+.chat-bubble-secondary p {
   color: #ffffff !important;
 }
