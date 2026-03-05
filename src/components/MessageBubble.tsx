@@ -4,7 +4,6 @@ interface Props {
   message: { role: 'user' | 'assistant'; content: string };
 }
 
-// Simple markdown→HTML (supports headers, bold, tables, blockquotes, lists, code, hr)
 function renderMarkdown(md: string): string {
   let html = md
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -18,29 +17,33 @@ function renderMarkdown(md: string): string {
     .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm text-white">$1</li>')
 
   html = html.replace(/(\|.+\|\n)+/g, (tableBlock) => {
-    const rows = tableBlock.trim().split('\n').filter(r => !r.match(/^\|[\s\-:]+\|$/));
-    if (rows.length === 0) return tableBlock;
+    const allRows = tableBlock.trim().split('\n');
+    const headerRow = allRows[0];
+    // 保留分隔行用于计数，数据行单独处理
+    const dataRows = allRows.slice(1).filter(r => !r.match(/^\|[\s\-:]+\|$/));
+    if (!headerRow) return tableBlock;
 
-    // 表头：深色背景，白色文字
+    // 表头白色文字
     let t = '<div class="overflow-x-auto my-2"><table class="table table-xs table-zebra w-full"><thead><tr>';
-    const headerCells = rows[0].split('|').filter(c => c.trim());
+    const headerCells = headerRow.split('|').filter(c => c.trim());
     headerCells.forEach(c => {
       t += `<th class="text-xs" style="color:#ffffff">${c.trim()}</th>`;
     });
     t += '</tr></thead><tbody>';
 
-    for (let i = 1; i < rows.length; i++) {
-      const cells = rows[i].split('|').filter(c => c.trim());
-      // DaisyUI table-zebra：奇数行(1,3,5...) 是浅色背景 → 深色文字
-      //                       偶数行(2,4,6...) 是深色背景 → 白色文字
-      const isOddRow = i % 2 === 1;
-      const color = isOddRow ? '#0f172a' : '#ffffff';
+    // dataRows[0]是第1个数据行，在tbody里是 tr:nth-child(1) = 奇数 = 浅色背景
+    // 所以 index 0,2,4(奇数序号) = 浅色行 → 深色文字
+    //      index 1,3,5(偶数序号) = 深色行 → 白色文字
+    dataRows.forEach((row, index) => {
+      const cells = row.split('|').filter(c => c.trim());
+      const isLightBg = index % 2 === 1; // 第0,2,4...行是浅色背景
+      const color = isLightBg ? '#0f172a' : '#ffffff';
       t += '<tr>';
       cells.forEach(c => {
         t += `<td class="text-xs" style="color:${color}">${c.trim()}</td>`;
       });
       t += '</tr>';
-    }
+    });
 
     t += '</tbody></table></div>';
     return t;

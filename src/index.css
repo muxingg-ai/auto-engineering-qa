@@ -6,14 +6,12 @@
   body {
     @apply text-slate-900;
   }
-
   th {
     @apply font-bold;
   }
 }
 
-/* AI 回复气泡（深蓝背景）：白色文字作为基础默认值 */
-/* 注意：表格 td/th 的颜色已在 MessageBubble.tsx 里用 style= 精确控制，不在这里覆盖 */
+/* AI 回复气泡（深蓝背景）：基础白色文字 */
 .chat-bubble-secondary,
 .chat-bubble-secondary .prose,
 .chat-bubble-secondary li,
@@ -22,5 +20,14 @@
 .chat-bubble-secondary h2,
 .chat-bubble-secondary h3,
 .chat-bubble-secondary p {
+  color: #ffffff !important;
+}
+
+/* 斑马纹表格：让浅色背景行的文字自动变深色 */
+/* DaisyUI table-zebra 给偶数行加浅色背景 */
+.chat-bubble-secondary .table-zebra tbody tr:nth-child(even) td {
+  color: #0f172a !important;
+}
+.chat-bubble-secondary .table-zebra tbody tr:nth-child(odd) td {
   color: #ffffff !important;
 }
