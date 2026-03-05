@@ -31,12 +31,13 @@ function renderMarkdown(md: string): string {
 
     for (let i = 1; i < rows.length; i++) {
       const cells = rows[i].split('|').filter(c => c.trim());
-      // 奇数行(1,3,5...) 深色背景 → 白色文字
-      // 偶数行(2,4,6...) 浅色斑马纹 → 深色文字
-      const isEvenRow = i % 2 === 0;
+      // DaisyUI table-zebra：奇数行(1,3,5...) 是浅色背景 → 深色文字
+      //                       偶数行(2,4,6...) 是深色背景 → 白色文字
+      const isOddRow = i % 2 === 1;
+      const color = isOddRow ? '#0f172a' : '#ffffff';
       t += '<tr>';
       cells.forEach(c => {
-        t += `<td class="text-xs" style="color:${isEvenRow ? '#0f172a' : '#ffffff'}">${c.trim()}</td>`;
+        t += `<td class="text-xs" style="color:${color}">${c.trim()}</td>`;
       });
       t += '</tr>';
     }
