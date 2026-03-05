@@ -7,14 +7,14 @@ interface Props {
 function renderMarkdown(md: string): string {
   let html = md
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
-    .replace(/^### (.+)$/gm, '<h3 class="font-bold text-sm mt-3 mb-1 text-white">$1</h3>')
-    .replace(/^## (.+)$/gm, '<h2 class="font-bold text-base mt-4 mb-2 text-white">$1</h2>')
-    .replace(/^# (.+)$/gm, '<h1 class="font-bold text-lg mt-4 mb-2 text-white">$1</h1>')
-    .replace(/\*\*(.+?)\*\*/g, '<strong class="text-white">$1</strong>')
-    .replace(/`([^`]+)`/g, '<code class="bg-base-300 px-1 rounded text-xs text-white">$1</code>')
-    .replace(/^&gt; (.+)$/gm, '<div class="border-l-4 border-primary pl-3 py-1 my-2 bg-primary/5 rounded-r text-sm text-white">$1</div>')
-    .replace(/^---$/gm, '<hr class="my-3 border-base-300"/>')
-    .replace(/^- (.+)$/gm, '<li class="ml-4 list-disc text-sm text-white">$1</li>')
+    .replace(/^### (.+)$/gm, '<h3 style="font-weight:bold;font-size:0.875rem;margin-top:0.75rem;margin-bottom:0.25rem;color:#ffffff">$1</h3>')
+    .replace(/^## (.+)$/gm, '<h2 style="font-weight:bold;font-size:1rem;margin-top:1rem;margin-bottom:0.5rem;color:#ffffff">$1</h2>')
+    .replace(/^# (.+)$/gm, '<h1 style="font-weight:bold;font-size:1.125rem;margin-top:1rem;margin-bottom:0.5rem;color:#ffffff">$1</h1>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong style="color:#ffffff">$1</strong>')
+    .replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.2);padding:0 4px;border-radius:4px;font-size:0.75rem;color:#ffffff">$1</code>')
+    .replace(/^&gt; (.+)$/gm, '<div style="border-left:4px solid #93c5fd;padding:4px 12px;margin:8px 0;color:#ffffff;font-size:0.875rem">$1</div>')
+    .replace(/^---$/gm, '<hr style="margin:12px 0;border-color:rgba(255,255,255,0.3)"/>')
+    .replace(/^- (.+)$/gm, '<li style="margin-left:1rem;list-style:disc;font-size:0.875rem;color:#ffffff">$1</li>')
 
   html = html.replace(/(\|.+\|\n)+/g, (tableBlock) => {
     const allRows = tableBlock.trim().split('\n');
@@ -22,25 +22,19 @@ function renderMarkdown(md: string): string {
     const dataRows = allRows.slice(1).filter(r => !r.match(/^\|[\s\-:]+\|$/));
     if (!headerRow) return tableBlock;
 
-    // 表头：深蓝背景 + 白色文字
-    let t = '<div class="overflow-x-auto my-2"><table class="table table-xs w-full" style="border-collapse:collapse"><thead><tr style="background:#1a6fbd">';
-    const headerCells = headerRow.split('|').filter(c => c.trim());
-    headerCells.forEach(c => {
-      t += `<th class="text-xs px-2 py-1" style="color:#ffffff">${c.trim()}</th>`;
+    const cellStyle = 'style="padding:6px 8px;font-size:0.75rem;border-bottom:1px solid rgba(255,255,255,0.2);color:#ffffff"';
+    const thStyle = 'style="padding:6px 8px;font-size:0.75rem;font-weight:bold;border-bottom:2px solid rgba(255,255,255,0.5);color:#ffffff;text-align:left"';
+
+    let t = '<div style="overflow-x:auto;margin:8px 0"><table style="width:100%;border-collapse:collapse"><thead><tr>';
+    headerRow.split('|').filter(c => c.trim()).forEach(c => {
+      t += `<th ${thStyle}>${c.trim()}</th>`;
     });
     t += '</tr></thead><tbody>';
 
-    dataRows.forEach((row, index) => {
-      const cells = row.split('|').filter(c => c.trim());
-      const isLastRow = index === dataRows.length - 1;
-      const isEven = index % 2 === 0;
-      // 最后一行始终用浅色背景+深色文字（DaisyUI会给最后行特殊样式）
-      // 其他行：偶数=深蓝背景+白字，奇数=浅色背景+深字
-      const bgColor = (isEven && !isLastRow) ? '#1a6fbd' : '#f0f6ff';
-      const textColor = (isEven && !isLastRow) ? '#ffffff' : '#0f172a';
-      t += `<tr style="background:${bgColor}">`;
-      cells.forEach(c => {
-        t += `<td class="text-xs px-2 py-1" style="color:${textColor}">${c.trim()}</td>`;
+    dataRows.forEach(row => {
+      t += '<tr style="background:rgba(255,255,255,0.05)">';
+      row.split('|').filter(c => c.trim()).forEach(c => {
+        t += `<td ${cellStyle}>${c.trim()}</td>`;
       });
       t += '</tr>';
     });
@@ -49,8 +43,8 @@ function renderMarkdown(md: string): string {
     return t;
   });
 
-  html = html.replace(/\n{2,}/g, '</p><p class="text-sm my-1 text-white">');
-  return `<p class="text-sm my-1 text-white">${html}</p>`;
+  html = html.replace(/\n{2,}/g, '</p><p style="font-size:0.875rem;margin:4px 0;color:#ffffff">');
+  return `<p style="font-size:0.875rem;margin:4px 0;color:#ffffff">${html}</p>`;
 }
 
 export const MessageBubble: React.FC<Props> = ({ message }) => {
@@ -67,10 +61,7 @@ export const MessageBubble: React.FC<Props> = ({ message }) => {
         {isUser ? (
           <p className="text-sm">{message.content}</p>
         ) : (
-          <div
-            className="prose prose-sm max-w-none"
-            dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }}
-          />
+          <div dangerouslySetInnerHTML={{ __html: renderMarkdown(message.content) }} />
         )}
       </div>
     </div>
