@@ -22,24 +22,23 @@ function renderMarkdown(md: string): string {
     const dataRows = allRows.slice(1).filter(r => !r.match(/^\|[\s\-:]+\|$/));
     if (!headerRow) return tableBlock;
 
-    // 表头白色文字
-    let t = '<div class="overflow-x-auto my-2"><table class="table table-xs table-zebra w-full"><thead><tr>';
+    // 表头：深蓝背景 + 白色文字
+    let t = '<div class="overflow-x-auto my-2"><table class="table table-xs w-full" style="border-collapse:collapse"><thead><tr style="background:#1a6fbd">';
     const headerCells = headerRow.split('|').filter(c => c.trim());
     headerCells.forEach(c => {
-      t += `<th class="text-xs" style="color:#ffffff">${c.trim()}</th>`;
+      t += `<th class="text-xs px-2 py-1" style="color:#ffffff">${c.trim()}</th>`;
     });
     t += '</tr></thead><tbody>';
 
     dataRows.forEach((row, index) => {
       const cells = row.split('|').filter(c => c.trim());
-      const isLastRow = index === dataRows.length - 1;
-      // 浅色背景行（奇数index 1,3,5... 以及最后一行）用深色文字
-      // 深色背景行（偶数index 0,2,4...，除最后行）用白色文字
-      const isLightBg = (index % 2 === 1) || isLastRow;
-      const color = isLightBg ? '#0f172a' : '#ffffff';
-      t += '<tr>';
+      // 自己控制斑马纹：偶数行浅色背景+深色文字，奇数行深色背景+白色文字
+      const isEven = index % 2 === 0;
+      const bgColor = isEven ? '#1a6fbd' : '#f0f6ff';
+      const textColor = isEven ? '#ffffff' : '#0f172a';
+      t += `<tr style="background:${bgColor}">`;
       cells.forEach(c => {
-        t += `<td class="text-xs" style="color:${color}">${c.trim()}</td>`;
+        t += `<td class="text-xs px-2 py-1" style="color:${textColor}">${c.trim()}</td>`;
       });
       t += '</tr>';
     });
